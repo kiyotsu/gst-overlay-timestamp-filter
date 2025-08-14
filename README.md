@@ -37,5 +37,29 @@ docker run -it --rm \
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v $PWD:/video \
-    sample-player:latest /video/input.mp4
+    sample-player:latest /video/input.mp4 --text-color="#ff0000" --text-align="center"
 ```
+
+#### Parameter
+サンプルプログラムがサポートするパラメータです。
+* **text-color:** テキストカラーをRGBで指定します。
+* **text-align:** テキスト位置を指定します。利用可能な値は以下の通りです。
+    * `top-left`
+    * `top-center`
+    * `top-right`
+    * `center-left`
+    * `center`
+    * `center-right`
+    * `bottom-left`
+    * `bottom-center`
+    * `bottom-right`
+* **outline-color:** テキストの外枠の色をRGBで指定します。
+* **format:** タイムスタンプのフォーマットを指定します。利用可能な書式は以下の通りです。
+    * `%Y`: 4桁の年 (例: 2023)
+    * `%m`: 2桁の月 (01-12)
+    * `%d`: 2桁の日 (01-31)
+    * `%H`: 2桁の時 (00-23)
+    * `%M`: 2桁の分 (00-59)
+    * `%S`: 2桁の秒 (00-59)
+    * `%q`: 3桁のミリ秒 (000-999)
+    * `%%`: '%'リテラル文字
