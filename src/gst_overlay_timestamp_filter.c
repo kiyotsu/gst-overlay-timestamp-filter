@@ -251,7 +251,8 @@ static GstFlowReturn gst_overlay_timestamp_filter_transform_ip(GstBaseTransform 
 
     cairo_text_path(cr, timestamp);
 
-    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+    cairo_set_source_rgb(cr, filter->outline_color.red / 255.0, filter->outline_color.green / 255.0,
+                         filter->outline_color.blue / 255.0);
     cairo_set_line_width(cr, 2.0);
     cairo_stroke_preserve(cr);
 
