@@ -55,7 +55,7 @@ int strfmttime(char *out_buf, size_t buf_size, const char *format, struct timeva
                     written = snprintf(p_out, remaining, "%d", tm_info.tm_year + 1900);
                     break;
                 case 'm':
-                    written = snprintf(p_out, remaining, "%02d", tm_info.tm_mon);
+                    written = snprintf(p_out, remaining, "%02d", tm_info.tm_mon + 1);
                     break;
                 case 'd':
                     written = snprintf(p_out, remaining, "%02d", tm_info.tm_mday);
