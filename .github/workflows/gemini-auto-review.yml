@@ -11,6 +11,9 @@ jobs:
   post-gemini-review-command:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Post Gemini review command
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
