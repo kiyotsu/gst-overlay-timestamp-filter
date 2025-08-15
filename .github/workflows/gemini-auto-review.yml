@@ -2,7 +2,7 @@ name: Trigger Gemini Review on PR Open
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
 
 permissions:
   pull-requests: write
