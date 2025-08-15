@@ -76,16 +76,17 @@ int strfmttime(char *out_buf, size_t buf_size, const char *format, struct timeva
                     written = snprintf(p_out, remaining, "%%");
                     break;
                 default:
-                    *p_out++ = '%';
-                    *p_out++ = *p_fmt;
-                    remaining -= 2;
-                    written = 0;
+                    written = snprintf(p_out, remaining, "%%%c", *p_fmt);
                     break;
             }
             if (written > 0 && written < remaining) {
                 p_out += written;
                 remaining -= written;
             } else if (written >= remaining) {
+                // snprintfで実際に書き込まれた文字列長を算出する
+                written = remaining - 1;
+                p_out += written;
+                remaining -= written;
                 goto end;
             }
         } else {
@@ -96,7 +97,13 @@ int strfmttime(char *out_buf, size_t buf_size, const char *format, struct timeva
     }
 
 end:
-    *p_out = '\0';  // ヌル終端
+    // 終端NULL文字は保証する
+    if (remaining == 0) {
+        out_buf[buf_size - 1] = '\0';
+        p_out--;
+    } else {
+        *p_out = '\0';
+    }
     return (p_out - out_buf);
 }
 
