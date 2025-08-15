@@ -1,0 +1,22 @@
+name: Trigger Gemini Review on PR Open
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  post-gemini-review-command:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Post Gemini review command
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body "/gemini review 指摘がない場合は「レビューは完了しました。指摘はありません。」とコメントしてください。"
