@@ -1,0 +1,24 @@
+name: Auto Approve on No Gemini Issues
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  auto-approve:
+    if: >
+      github.event.issue.pull_request &&
+      github.event.comment.user.login == 'gemini-code-assist[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approve Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.event.comment.body == 'レビュー指摘はありません。'
+        run: |
+          gh pr review ${{ github.event.issue.number }} \
+            --approve \
+            --body "Gemini Code Assistによるレビューで指摘事項がなかったため、自動的に承認されました。"
