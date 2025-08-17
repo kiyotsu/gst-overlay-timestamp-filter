@@ -11,10 +11,16 @@
 
 
 ## 🔧 Build
-以下のコマンドで`build`ディレクトリ配下に共有ライブラリが生成されます。
+以下のコマンドで`build`ディレクトリ配下に共有ライブラリが生成されます。  
+この方法は、ビルドで生成されるファイルがソースコードと混在しないため、推奨されます。
+
 ```bash
-mkdir build && cd build && cmake .. && make
+cmake -B build && cd build && cmake --build .
 ```
+
+### CMake Arguments
+* `-DBUILD_TEST=TRUE`: 単体テストコードをビルドします。 `./build/run_test`
+* `-DENABLE_COVERAGE=TRUE`: カバレッジ計測を有効にします。
 
 
 ## 🚀 Running the Sample

@@ -1,0 +1,50 @@
+name: CI for GST Plugin
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libcairo2-dev pkg-config lcov
+
+      - name: Configure
+        run: cmake -B build -DBUILD_TEST=ON -DENABLE_COVERAGE=ON
+
+      - name: Build and Test
+        working-directory: ./build
+        run: |
+          cmake --build .
+          export GST_PLUGIN_PATH=$(pwd)
+          ctest --output-on-failure
+
+      - name: Generate Coverage Report
+        working-directory: ./build
+        run: |
+          lcov --capture --directory . --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' '*/googletest/*' --output-file coverage.info
+          genhtml coverage.info --output-directory coverage_report
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: build/coverage_report
+
+      - name: Post Coverage Comment
+        if: github.event_name == 'pull_request'
+        uses: romeovs/lcov-reporter-action@v0.4.1
+        with:
+          lcov-file: ./build/coverage.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
