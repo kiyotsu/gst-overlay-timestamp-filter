@@ -19,7 +19,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMENT_BODY: |
-            @gemini-code-assist コードレビューをお願いします。
-            **PullRequestのコミット内容**に**High Priorityの指摘が存在しない場合**は**「レビュー指摘はありません。」とだけ**コメントしてください。
+            @gemini-code-assist /gemini-review
+            コードレビューをお願いします。
+            **PullRequestのコミット内容**に**High Priorityの指摘が存在しない場合**は「レビュー指摘はありません。」とだけコメントしてください。
         run: |
           gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT_BODY"
