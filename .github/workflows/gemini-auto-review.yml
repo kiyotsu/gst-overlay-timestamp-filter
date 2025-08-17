@@ -8,15 +8,19 @@ permissions:
   pull-requests: write
 
 jobs:
-  post-gemini-review-command:
+  post-gemini-review-request-comment:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Post Gemini review command
+      - name: Post Gemini review request comment
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_BODY: |
+            @gemini-code-assist /gemini-review
+            レビューをお願いします。
+            **PullRequestのコミット内容**に**High Priorityの指摘が存在しない場合**は「レビュー指摘はありません。」とだけコメントしてください。
         run: |
-          gh pr comment ${{ github.event.pull_request.number }} \
-            --body "/gemini review 指摘がない場合は「レビューは完了しました。指摘はありません。」とコメントしてください。"
+          gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT_BODY"
