@@ -44,7 +44,7 @@ jobs:
 
       - name: Post Coverage Comment
         if: github.event_name == 'pull_request'
-        uses: romeovs/lcov-reporter-action@v0.4.1
+        uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           lcov-file: ./build/coverage.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
