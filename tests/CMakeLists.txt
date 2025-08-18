@@ -14,23 +14,28 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 # テスト対象のソースコードをインクルード
-include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../src
-  ${GSTREAMER_INCLUDE_DIRS}
-)
+include_directories(${GSTREAMER_INCLUDE_DIRS})
 
 # テスト実行ファイルの作成
 add_executable(
   run_tests
   test_gst_overlay_timestamp_utils.cpp
   test_gst_overlay_timestamp_filter.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/../src/gst_overlay_timestamp_utils.c
+)
+
+# 親ディレクトリのターゲットgstoverlaytsを参照可能にする
+add_dependencies(run_tests gstoverlayts)
+
+# テスト対象のソースコードをインクルード
+target_include_directories(run_tests PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/../src
+  ${GSTREAMER_INCLUDE_DIRS}
 )
 
 # テスト対象のソースファイルをリンク
 target_link_libraries(
   run_tests
-  PRIVATE gtest_main ${GSTREAMER_LIBRARIES})
+  PRIVATE gstoverlayts gtest_main ${GSTREAMER_LIBRARIES})
 
 # テストの追加
 include(GoogleTest)
