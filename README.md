@@ -15,7 +15,7 @@
 この方法は、ビルドで生成されるファイルがソースコードと混在しないため、推奨されます。
 
 ```bash
-cmake -B build && cd build && cmake --build .
+cmake -B build && cmake --build build
 ```
 
 ### CMake Arguments
