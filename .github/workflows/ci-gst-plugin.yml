@@ -3,8 +3,18 @@ name: CI for GST Plugin
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'CMakeLists.txt'
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/ci-gst-plugin.yml'
   pull_request:
     branches: [ master ]
+    paths:
+      - 'CMakeLists.txt'
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/ci-gst-plugin.yml'
 
 permissions:
   pull-requests: write
@@ -37,7 +47,7 @@ jobs:
         working-directory: ./build
         run: |
           lcov --capture --directory . --output-file coverage.info
-          lcov --remove coverage.info '/usr/*' '*/googletest/*' --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' '*/googletest/*' '*/tests/*' --output-file coverage.info
           genhtml coverage.info --output-directory coverage_report
 
       - name: Upload Coverage Report
